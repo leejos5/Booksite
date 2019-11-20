@@ -5,12 +5,14 @@
 
   window.addEventListener("load", init);
 
+  /** Initializes the page with the books and click events for switching displays. */
   function init() {
     loadAllBooks();
     id("single-book").classList.add("hidden");
     id("home").addEventListener("click", changeDisplay);
   }
 
+  /** Fetches the information to load the display elements of every book in the API. */
   function loadAllBooks() {
     fetch(URL + "books")
       .then(checkStatus)
@@ -20,8 +22,8 @@
   }
 
   /**
-   * FILL THIS STUFF IN
-   * @param {object} response - FILL THIS STUFF IN
+   * Processes the book info from the API to create its display.
+   * @param {object} response - an object of all the books in the API.
    */
   function processBooks(response) {
     for (let i = 0; i < response.books.length; i++) {
@@ -44,8 +46,9 @@
   }
 
   /**
-   * FILL THIS STUFF IN
-   * @param {string} bookId - FILL THIS STUFF IN
+   * Displays more information for the selected book, switching the view to a single book.
+   * Fetches data for the information, description, and reviews of the selected book.
+   * @param {string} bookId - the id of the selected book
    */
   function showSingleBook(bookId) {
     id("book-reviews").innerHTML = "";
@@ -58,8 +61,8 @@
   }
 
   /**
-   * FILL THIS STUFF IN
-   * @param {object} response - FILL THIS STUFF IN
+   * Processes and displays the given information for the book.
+   * @param {object} response - info for the book, including title and author.
    */
   function processInfo(response) {
     id("book-title").textContent = response.title;
@@ -67,16 +70,16 @@
   }
 
   /**
-   * FILL THIS STUFF IN
-   * @param {object} response - FILL THIS STUFF IN
+   * Processes and displays the given description for the book.
+   * @param {string} response - description of the book.
    */
   function processDesc(response) {
     id("book-description").textContent = response;
   }
 
   /**
-   * FILL THIS STUFF IN
-   * @param {object} response - FILL THIS STUFF IN
+   * Processes and displays the reviews for the given book, including overall rating.
+   * @param {object} response - collection of each review made.
    */
   function processReviews(response) {
     let totalScore = 0;
@@ -109,14 +112,15 @@
     id("all-books").classList.remove("hidden");
   }
 
-  function handleError(error) {
+  /** Reveals the user-friendly error message on the page. */
+  function handleError() {
     id("book-data").classList.add("hidden");
     id("error-text").classList.remove("hidden");
   }
 
   /**
-   * Helper function that returns the response'scontents if successful. If not, returns the rejected
-   * Promise with the corresponding error text.
+   * Helper function that returns the response's contents if successful. If not, returns the
+   * rejected Promise with the corresponding error text.
    * @param {object} response - response to the success check.
    * @returns {object} - valid response if succesful response, otherise rejected promise.
    */
@@ -127,13 +131,20 @@
     return response; // a Response object
   }
 
+  /**
+   * Helper function that fetches information from the given url with a response with the given
+   * output format and processes that information.
+   * @param {string} url - the url to fetch information from.
+   * @param {string} outputFormat - the format of the response.
+   * @param {function} processData - the function to process the given data.
+   */
   function fetchInfo(url, outputFormat, processData) {
     if (outputFormat === "json") {
-    fetch(url)
-      .then(checkStatus)
-      .then(resp => resp.json())
-      .then(processData)
-      .catch(handleError);
+      fetch(url)
+        .then(checkStatus)
+        .then(resp => resp.json())
+        .then(processData)
+        .catch(handleError);
     } else {
       fetch(url)
         .then(checkStatus)
@@ -143,10 +154,20 @@
     }
   }
 
+  /**
+   * Helper function to generate the given element.
+   * @param {string} element - html tag
+   * @return {object} - generated DOM objet of given tag
+   */
   function gen(element) {
     return document.createElement(element);
   }
 
+  /**
+   * Helper function to find an element by the given id.
+   * @param {string} elementId - the id of the element.
+   * @return {object} - DOM object associated with the given id.
+   */
   function id(elementId) {
     return document.getElementById(elementId);
   }

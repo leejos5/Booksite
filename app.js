@@ -72,6 +72,11 @@ app.get(URL + "books", async (req, res) => {
   }
 });
 
+/**
+ * processes the info for the given book.
+ * @param {string} bookId - the id of the selected book.
+ * @return {array} - JSON object of the book's info.
+ */
 async function processInfo(bookId) {
   let contents = await readFileAsync("books/" + bookId + "/info.txt");
   contents = contents.split("\n");
@@ -83,9 +88,9 @@ async function processInfo(bookId) {
 }
 
 /**
- * does function stuff
- * @param {string} allBooks - so like a bunch of books
- * @return {object} - json of stuff to return
+ * Processes the information for each of the books to be displayed on the page.
+ * @param {string} allBooks - names of all the books.
+ * @return {object} - JSON Object of all the books' basic information.
  */
 async function processAllBooks(allBooks) {
   let jsonBooks = {
@@ -103,14 +108,6 @@ async function processAllBooks(allBooks) {
   return jsonBooks;
 }
 
-async function readFileAsync(path) {
-  try {
-    let result = await fs.readFile(path, "utf8");
-    return result;
-  } catch (error) {
-    return error;
-  }
-}
 /**
  * does function stuff
  * @param {object} reviews - so like stuff
@@ -127,6 +124,20 @@ async function processReviews(reviews) {
     });
   }
   return jsonReviews;
+}
+
+/**
+ * Helper function to read the file at the given path asynchronously.
+ * @param {string} path - the path of the desired file.
+ * @return {object} - if error, rejected promise; if not, returns the file contents.
+ */
+async function readFileAsync(path) {
+  try {
+    let result = await fs.readFile(path, "utf8");
+    return result;
+  } catch (error) {
+    return error;
+  }
 }
 
 const PORT = process.env.PORT || 8000;
