@@ -1,7 +1,7 @@
 "use strict";
 (function() {
 
-  const URL = "bestreads/";
+  const URL = "/bestreads/";
 
   window.addEventListener("load", init);
 
@@ -24,7 +24,7 @@
    * @param {object} response - FILL THIS STUFF IN
    */
   function processBooks(response) {
-    for (let i = 0; i < response.length; i++) {
+    for (let i = 0; i < response.books.length; i++) {
       let book = gen("div");
       book.classList.add("selectable");
       book.addEventListener("click", function() {
@@ -32,7 +32,7 @@
       });
 
       let cover = gen("img");
-      cover.src = "/public/covers/" + response.books[i]["book_id"] + ".jpg";
+      cover.src = "covers/" + response.books[i]["book_id"] + ".jpg";
       book.appendChild(cover);
 
       let title = gen("p");
@@ -48,11 +48,13 @@
    * @param {string} bookId - FILL THIS STUFF IN
    */
   function showSingleBook(bookId) {
+    id("book-reviews").innerHTML = "";
+    id("book-cover").src = "covers/" + bookId + ".jpg";
+    fetchInfo(URL + "info/" + bookId, "json", processInfo);
+    fetchInfo(URL + "description/" + bookId, "text", processDesc);
+    fetchInfo(URL + "reviews/" + bookId, "json", processReviews);
     id("all-books").classList.add("hidden");
     id("single-book").classList.remove("hidden");
-    fetchInfo(URL + "info/" + bookId, json, processInfo);
-    fetchInfo(URL + "description/" + bookId, text, processDesc);
-    fetchInfo(URL + "reviews/" + bookId, json, processReviews);
   }
 
   /**
@@ -69,7 +71,7 @@
    * @param {object} response - FILL THIS STUFF IN
    */
   function processDesc(response) {
-    id("book-description").textContent = response.text;
+    id("book-description").textContent = response;
   }
 
   /**
@@ -86,10 +88,11 @@
       reviewSection.appendChild(reviewer);
 
       let score = gen("h4");
-      let presentedRating = response[i].rating.toFixed(1);
+      let presentedRating = parseInt(response[i].rating);
+      totalScore += presentedRating;
+      presentedRating = presentedRating.toFixed(1);
       score.textContent = "Rating: " + presentedRating;
       reviewSection.appendChild(score);
-      totalScore += response[i].rating;
 
       let review = gen("p");
       review.textContent = response[i].text;
@@ -111,12 +114,33 @@
     id("error-text").classList.remove("hidden");
   }
 
+  /**
+   * Helper function that returns the response'scontents if successful. If not, returns the rejected
+   * Promise with the corresponding error text.
+   * @param {object} response - response to the success check.
+   * @returns {object} - valid response if succesful response, otherise rejected promise.
+   */
+  function checkStatus(response) {
+    if (!response.ok) {
+      throw Error("Error in request: " + response.statusText);
+    }
+    return response; // a Response object
+  }
+
   function fetchInfo(url, outputFormat, processData) {
+    if (outputFormat === "json") {
     fetch(url)
       .then(checkStatus)
-      .then(resp = resp.outputFormat())
+      .then(resp => resp.json())
       .then(processData)
       .catch(handleError);
+    } else {
+      fetch(url)
+        .then(checkStatus)
+        .then(resp => resp.text())
+        .then(processData)
+        .catch(handleError);
+    }
   }
 
   function gen(element) {
