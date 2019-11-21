@@ -1,3 +1,105 @@
+/*
+ * Joshua Lee
+ * November 19th, 2019
+ * CSE 154 AE
+ *
+ * This is the documentation for the app.js server for the Bestreads API. It provides information
+ * about the list of books, including author, description, and reviews.
+ *
+ * ***endpoints***
+* All endpoints are get requests.
+
+ * 1: /bestreads/description/:book_id
+ * Provides the description for the selected book.
+ * Response format: text/plain
+ * Parameters: :book_id - the id of the selected book
+ * Possible errors: invalid parameter (500)
+ *                  server error(400)
+ * Example request: "/bestreads/description/harrypotter"
+ * Example response:
+ * ```
+ * Harry Potter is lucky to reach the age of thirteen, since he has already survived
+ * the murderous attacks of the feared Dark Lord on more than one occasion. But his
+ * hopes for a quiet term concentrating on Quidditch are dashed when a maniacal
+ * mass-murderer escapes from Azkaban, pursued by the soul-sucking Dementors who
+ * guard the prison. It's assumed that Hogwarts is the safest place for Harry to
+ * be. But is it a coincidence that he can feel eyes watching him in the dark,
+ * and should he be taking Professor Trelawney's ghoulish predictions seriously?
+ * ```
+ *
+ * 2: /bestreads/info/:book_id
+ * Provides the general information for the selected book.
+ * Response format: application/json
+ * Parameters: :book_id - the id of the selected book
+ * Possible errors: invalid parameter (500)
+ *                  server error (400)
+ * Example request: "/bestreads/info/harrypotter"
+ * Example response:
+ * ```
+ * json
+ * {
+ *   "title": "Harry Potter and the Prisoner of Azkaban (Harry Potter #3)",
+ *   "author": "by J.K. Rowling, Mary GrandPre (Illustrator)",
+ * }
+ * ```
+ *
+ * 3: /bestreads/reviews/:book_id
+ * Provides information of the book's reviews, including the reviewer and rating from each reviewer.
+ * Response format: application/json
+ * Parameters: :book_id - the id of the selected book
+ * Possible errors: invalid parameter (500)
+                    server error (400)
+ * Example request: "/bestreads/reviews/harrypotter"
+ * Example response:
+ * '''
+ * json
+ * [
+ *    {
+ *       "name": "Wil Wheaton",
+ *       "rating": 4.1,
+ *       "text": "I'm beginning to wonder if there will ever be a Defense Against The Dark Arts teacher who is just a teacher."
+ *   },
+ *   {
+ *       "name": "Zoe",
+ *       "rating": 4.8,
+ *       "text": "Yup yup yup I love this book"
+ *   },
+ *   {
+ *       "name": "Kiki",
+ *       "rating": 5,
+ *       "text": "Literally one of the best books I've ever read. I was chained to it for two days. I cried and laughed and yelled AHH when all of the action went down."
+ *   }
+ * ]
+ * ```
+ *
+ * 4: /bestreads/books
+ * Gets a list of all the books on the website.
+ * Response format: application/json
+ * Possible errors: server error (400)
+ * Example request: "/bestreads/books"
+ * Example response:
+ * '''
+ * json
+ * {
+ *   "books": [
+ *       {
+ *           "title": "2001: A Space Odyssey",
+ *           "book_id": "2001spaceodyssey"
+ *       },
+ *       {
+ *           "title": "Alanna: The First Adventure (Song of the Lioness #1)",
+ *           "book_id": "alannathefirstadventure"
+ *       },
+ *       {
+ *           "title": "Alice in Wonderland",
+ *           "book_id": "aliceinwonderland"
+ *       },
+ *       ... (one entry like this for each folder inside books/)
+ *   ]
+ * }
+ * '''
+ */
+
 "use strict";
 const util = require("util");
 const express = require("express");
@@ -12,6 +114,7 @@ const URL = "/bestreads/";
 
 app.use(express.static("public"));
 
+/** Gets a description of the chosen book in text format. */
 app.get(URL + "description/:book_id", async (req, res) => {
   let bookId = req.params["book_id"];
   res.type("text");
@@ -27,6 +130,7 @@ app.get(URL + "description/:book_id", async (req, res) => {
   }
 });
 
+/** Sends the basic information for the selected book in json format. */
 app.get(URL + "info/:book_id", async (req, res) => {
   let bookId = req.params["book_id"];
   try {
@@ -43,6 +147,7 @@ app.get(URL + "info/:book_id", async (req, res) => {
   }
 });
 
+/** Sends the review info for the chosen book, including author and rating. */
 app.get(URL + "reviews/:book_id", async (req, res) => {
   let bookId = req.params["book_id"];
   try {
@@ -60,6 +165,7 @@ app.get(URL + "reviews/:book_id", async (req, res) => {
   }
 });
 
+/** Sends a list of all the books in the API. */
 app.get(URL + "books", async (req, res) => {
   try {
     res.type("json");
@@ -109,8 +215,9 @@ async function processAllBooks(allBooks) {
 }
 
 /**
- * does function stuff
- * @param {object} reviews - so like stuff
+ * Processes the information for each review for the selected book.
+ * @param {object} reviews - the obejct with information for each of the reviews.
+ * @return {object}- JSON object with sorted information for each review.
  */
 async function processReviews(reviews) {
   let jsonReviews = [];

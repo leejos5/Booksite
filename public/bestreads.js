@@ -1,3 +1,12 @@
+/*
+ * Joshua Lee
+ * November 19th, 2019
+ * CSE 154 AE
+ *
+ * This is the documentation for the bestreads.js client-side javascript for the Bestreads API.
+ * It fetches information from the Bestreads to display data on various different books.
+ */
+
 "use strict";
 (function() {
 
@@ -139,19 +148,11 @@
    * @param {function} processData - the function to process the given data.
    */
   function fetchInfo(url, outputFormat, processData) {
-    if (outputFormat === "json") {
-      fetch(url)
-        .then(checkStatus)
-        .then(resp => resp.json())
-        .then(processData)
-        .catch(handleError);
-    } else {
-      fetch(url)
-        .then(checkStatus)
-        .then(resp => resp.text())
-        .then(processData)
-        .catch(handleError);
-    }
+    fetch(url)
+      .then(checkStatus)
+      .then(resp => resp[outputFormat]())
+      .then(processData)
+      .catch(handleError);
   }
 
   /**
