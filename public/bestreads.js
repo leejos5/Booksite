@@ -17,7 +17,7 @@
   /** Initializes the page with the books and click events for switching displays. */
   function init() {
     loadAllBooks();
-    id("single-book").classList.add("hidden");
+    changeDisplay();
     id("home").addEventListener("click", changeDisplay);
   }
 

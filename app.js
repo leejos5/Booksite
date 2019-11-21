@@ -127,7 +127,7 @@ app.get(URL + "description/:book_id", async (req, res) => {
     if (error.code === "ENOENT") {
       res.status(400).send("No results found for " + bookId + ".");
     } else {
-      res.status(500).send("Something went on the server, try again later!");
+      res.status(500).send("Something went wrong on the server, try again later!");
     }
   }
 });
@@ -144,7 +144,7 @@ app.get(URL + "info/:book_id", async (req, res) => {
     if (error.code === "ENOENT") {
       res.status(400).send("No results found for " + bookId + ".");
     } else {
-      res.status(500).send("Something went on the server, try again later!");
+      res.status(500).send("Something went wrong on the server, try again later!");
     }
   }
 });
@@ -162,7 +162,7 @@ app.get(URL + "reviews/:book_id", async (req, res) => {
     if (error.code === "ENOENT") {
       res.status(400).send("No results found for " + bookId + ".");
     } else {
-      res.status(500).send("Something went on the server, try again later!");
+      res.status(500).send("Something went wrong on the server, try again later!");
     }
   }
 });
@@ -176,7 +176,7 @@ app.get(URL + "books", async (req, res) => {
     res.send(result);
   } catch (error) {
     res.type("text");
-    res.status(500).send("Something went on the server, try again later!");
+    res.status(500).send("Something went wrong on the server, try again later!");
   }
 });
 
