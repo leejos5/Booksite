@@ -58,7 +58,7 @@
  *       "name": "Wil Wheaton",
  *       "rating": 4.1,
  *       "text": "I'm beginning to wonder if there will ever be a Defense Against The Dark Arts
-                  teacher who is just a teacher."
+ *                teacher who is just a teacher."
  *   },
  *   {
  *       "name": "Zoe",
@@ -69,7 +69,7 @@
  *       "name": "Kiki",
  *       "rating": 5,
  *       "text": "Literally one of the best books I've ever read. I was chained to it for two days.
-                  I cried and laughed and yelled AHH when all of the action went down."
+ *                I cried and laughed and yelled AHH when all of the action went down."
  *   }
  * ]
  * ```
