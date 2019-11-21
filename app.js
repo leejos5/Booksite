@@ -7,8 +7,8 @@
  * about the list of books, including author, description, and reviews.
  *
  * ***endpoints***
-* All endpoints are get requests.
-
+ * All endpoints are get requests.
+ *
  * 1: /bestreads/description/:book_id
  * Provides the description for the selected book.
  * Response format: text/plain
@@ -48,7 +48,7 @@
  * Response format: application/json
  * Parameters: :book_id - the id of the selected book
  * Possible errors: invalid parameter (500)
-                    server error (400)
+ *                   server error (400)
  * Example request: "/bestreads/reviews/harrypotter"
  * Example response:
  * '''
@@ -57,7 +57,8 @@
  *    {
  *       "name": "Wil Wheaton",
  *       "rating": 4.1,
- *       "text": "I'm beginning to wonder if there will ever be a Defense Against The Dark Arts teacher who is just a teacher."
+ *       "text": "I'm beginning to wonder if there will ever be a Defense Against The Dark Arts
+                  teacher who is just a teacher."
  *   },
  *   {
  *       "name": "Zoe",
@@ -67,7 +68,8 @@
  *   {
  *       "name": "Kiki",
  *       "rating": 5,
- *       "text": "Literally one of the best books I've ever read. I was chained to it for two days. I cried and laughed and yelled AHH when all of the action went down."
+ *       "text": "Literally one of the best books I've ever read. I was chained to it for two days.
+                  I cried and laughed and yelled AHH when all of the action went down."
  *   }
  * ]
  * ```
